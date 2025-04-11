@@ -1,0 +1,19 @@
+# Ignore virtual env
+prostate-seg-env/
+
+# Ignore datasets
+data/
+
+# Ignore model weights
+models/
+
+# Ignore macOS junk
+.DS_Store
+
+# Ignore system/editor files
+__pycache__/
+*.pyc
+*.ipynb_checkpoints/
+
+# Optional: ignore personal docs
+Python Assignment AMPED Lab.docx
