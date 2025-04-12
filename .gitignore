@@ -1,5 +1,6 @@
 # Ignore virtual env
 prostate-seg-env/
+prostate-seg-env-py310
 
 # Ignore datasets
 data/
