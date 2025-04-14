@@ -30,7 +30,7 @@ prostate-gland-segmentation-on-MRI/
 
 1. **Clone the repository**
 ```bash
-git clone https://github.com/<your-username>/prostate-gland-segmentation-on-MRI
+git clone https://github.com/venky348/prostate-gland-segmentation-on-MRI
 cd prostate-gland-segmentation-on-MRI
 ```
 
