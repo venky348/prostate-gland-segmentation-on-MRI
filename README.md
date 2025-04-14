@@ -1,74 +1,87 @@
-# Prostate Gland Segmentation on MRI
+# Prostate Gland Segmentation on MRI using MONAI
 
-This project focuses on segmenting the central gland (CG) from T2-weighted MRI images using a pre-trained 3D UNet model from the MONAI model zoo. The pipeline includes evaluation of the pre-trained model on a new dataset (PI-CAI D2) and subsequent fine-tuning to improve performance.
+This project implements prostate gland segmentation on T2-weighted MRI scans using a pre-trained 3D UNet model from the MONAI Model Zoo. The objective is to evaluate and fine-tune the model on the PI-CAI dataset.
 
-## Project Overview
+---
 
-The project consists of two main phases:
-1. **Evaluation** of the pre-trained MONAI model on the D2 dataset
-2. **Fine-tuning** the model to adapt to the new dataset
-
-## Directory Structure
+##  Project Structure
 
 ```
 prostate-gland-segmentation-on-MRI/
 ├── data/
 │   └── PI-CAI/
-│       ├── cohort.csv           # Patient metadata with file paths
-│       └── file_data/           # Per-patient folders with T2 and gland NIfTI files
+│       ├── cohort.csv
+│       └── file_data/               # Individual patient NIfTI volumes
 ├── models/
-│   └── prostate_mri_anatomy/    # Pre-trained MONAI model bundle with configs and weights
+│   └── prostate_mri_anatomy/        # Pre-trained MONAI bundle
 ├── notebooks/
-│   ├── part1_prostate_gland_segmentation.ipynb
-│   └── part2_finetuning_unet.ipynb
-├── prostate-seg-env/            # Python virtual environment
+│   ├── part1_evaluation.ipynb       # Evaluate pre-trained model
+│   └── part2_finetuning.ipynb       # Fine-tune on new data
 ├── README.md
-└── requirements.txt             # Python dependencies (optional)
+└── requirements.txt
 ```
 
-## Setup Instructions
+---
 
-1. **Clone the repository**
-```bash
-git clone https://github.com/venky348/prostate-gland-segmentation-on-MRI
-cd prostate-gland-segmentation-on-MRI
-```
+## Model Details
 
-2. **Create and activate a virtual environment**
-```bash
-python -m venv prostate-seg-env
-source prostate-seg-env/bin/activate
-```
+- **Architecture**: 3D UNet
+- **Source**: MONAI Model Zoo
+- **Target**: Segment the central gland (CG) from T2-weighted MRI
+- **Preprocessing**: Resized to (96, 96, 96), intensity scaled, single-channel T2
 
-3. **Install required packages**
-```bash
-pip install -r requirements.txt
-```
+---
 
-4. **Place data and model files**
-   - Data should be placed under `data/PI-CAI/file_data/` with the following structure:
-     ```
-     <patient_id>/
-       ├── <patient_id>_t2w.nii.gz
-       └── <patient_id>_gland.nii.gz
-     ```
-   - The MONAI bundle should be located in `models/prostate_mri_anatomy/`.
+## Data
 
-## Approach Summary
+- **Dataset**: PI-CAI (Prostate Imaging: Cancer AI)
+- **Download**: [PI-CAI Dataset - Onedrive](https://indiana-my.sharepoint.com/personal/rshirad_iu_edu/_layouts/15/onedrive.aspx?id=%2Fpersonal%2Frshirad%5Fiu%5Fedu%2FDocuments%2Fdata%2FPI%2DCAI&ga=1)
+- The dataset includes T2-weighted MRI and gland annotations.
+- `cohort.csv` contains metadata and paths to each patient scan and mask.
 
-- Uses MONAI transforms for spatial and intensity preprocessing
-- Evaluates model using Dice coefficient metric
-- Performs sliding window inference for full-volume prediction
-- Implements visualizations for both best- and worst-performing cases
-- Supports model fine-tuning with DiceCELoss
+> **Note**: The dataset is not uploaded to this repository due to its size (>100MB). Please download and place it in `data/PI-CAI/`.
 
-## Notebooks
+---
 
-- `part1_prostate_gland_segmentation.ipynb` – Evaluates the model and analyzes predictions
-- `part2_finetuning_unet.ipynb` – Fine-tunes the model on the D2 dataset
+## Pre-trained Model
 
-## Notes
+- **Model**: Prostate MRI Anatomy Segmentation
+- **Download**: [MONAI Model Zoo](https://monai.io/model-zoo.html)
+- Place it under: `models/prostate_mri_anatomy/`
 
-- The original preprocessing steps defined in `inference.json` were evaluated, but manual preprocessing yielded significantly better results.
-- Results, figures, and detailed analysis are presented in the Jupyter notebooks.
+> **Note**: The model bundle is not included in the repository due to size limits.
+
+---
+
+## Environment Setup
+
+1. **Create and activate environment**
+   ```bash
+   conda create -n prostate-seg-env python=3.10
+   conda activate prostate-seg-env
+   ```
+
+2. **Install dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. **(Optional) Generate requirements.txt**
+   ```bash
+   pip freeze > requirements.txt
+   ```
+
+---
+
+## Code Workflow
+
+- **Part 1**: Load and evaluate the pre-trained MONAI model on the D2 dataset.
+- **Part 2**: Fine-tune the model using Dice + CrossEntropy loss and observe improvement.
+- Visualizations and Dice metrics are used to compare results and understand error cases.
+
+---
+
+## Results
+
+The results (Dice scores, visualizations of predictions) are shown in the Jupyter notebooks. Best and worst-performing patients are visualized to analyze model performance.
 
